@@ -42,6 +42,7 @@ func Register(tpl *template.Template, params pgs.Parameters) {
 		"oneof":         fns.oneofTypeName,
 		"pkg":           fns.PackageName,
 		"snakeCase":     fns.snakeCase,
+		"trimStrSlice":  fns.trimStrSlice,
 		"tsGt":          fns.tsGt,
 		"tsLit":         fns.tsLit,
 		"tsStr":         fns.tsStr,
@@ -56,6 +57,9 @@ func Register(tpl *template.Template, params pgs.Parameters) {
 	template.Must(tpl.New("const").Parse(constTpl))
 	template.Must(tpl.New("ltgt").Parse(ltgtTpl))
 	template.Must(tpl.New("in").Parse(inTpl))
+	template.Must(tpl.New("custom_in").Parse(custominTpl))
+	template.Must(tpl.New("custom_in_csv").Parse(customincsvTpl))
+	template.Must(tpl.New("custom_in_func").Parse(custominfuncTpl))
 
 	template.Must(tpl.New("none").Parse(noneTpl))
 	template.Must(tpl.New("float").Parse(numTpl))
@@ -376,4 +380,11 @@ func (fns goSharedFuncs) enumPackages(enums []pgs.Enum) map[pgs.Name]NormalizedE
 
 func (fns goSharedFuncs) snakeCase(name string) string {
 	return strcase.ToSnake(name)
+}
+
+func (fns goSharedFuncs) trimStrSlice(strList []string, cutset string) []string {
+	for k, str := range strList {
+		strList[k] = strings.Trim(str, "[]")
+	}
+	return strList
 }

@@ -23,6 +23,8 @@ import (
 	{{ range $pkg, $enum := enumPackages (externalEnums .) }}
 		{{ $pkg }} "{{ $enum.FilePath }}"
 	{{ end }}
+
+	"witch/validaterules"
 )
 
 // ensure the imports are used
